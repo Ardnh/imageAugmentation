@@ -62,19 +62,26 @@ func Flip(path string, savePath string, name string, deg int) {
 	fmt.Println(print)
 }
 
-func Bringhtness(path string, savePath string, name string) {
+func AdjustBringhtness(path string, savePath string, name string, id int) {
 	filePath := fmt.Sprintf("%s%s", path, name)
 	fmt.Println(filePath)
 	savePathName := fmt.Sprintf("%s%s", savePath, name)
 	src, err := imaging.Open(filePath)
+	var transformedImage *image.NRGBA
 	if err != nil {
 		panic(err)
 	}
 
-	transformedImage := imaging.AdjustBrightness(src, 20)
+	if id == 0 {
+		transformedImage = imaging.AdjustBrightness(src, 30)
+	}
+
+	if id == 1 {
+		transformedImage = imaging.AdjustBrightness(src, -30)
+	}
 
 	imaging.Save(transformedImage, savePathName)
-	print := fmt.Sprintf("image %s saved after adjust bringhtsness %d", name, 10)
+	print := fmt.Sprintf("image %s saved after adjust bringhtsness", name)
 	fmt.Println(print)
 }
 
@@ -87,7 +94,7 @@ func Blur(path string, savePath string, name string) {
 		panic(err)
 	}
 
-	transformedImage := imaging.Blur(src, 2)
+	transformedImage := imaging.Blur(src, 2.25)
 
 	imaging.Save(transformedImage, savePathName)
 	print := fmt.Sprintf("image %s saved after adjust blur %d", name, 1)
