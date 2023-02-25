@@ -7,9 +7,8 @@ import (
 	"github.com/disintegration/imaging"
 )
 
-func Rotate(path string, savePath string, name string, deg int) {
+func Rotate(path string, savePath string, name string, state int) {
 	filePath := fmt.Sprintf("%s%s", path, name)
-	fmt.Println(filePath)
 	savePathName := fmt.Sprintf("%s%s", savePath, name)
 	src, err := imaging.Open(filePath)
 	var transformedImage *image.NRGBA
@@ -17,31 +16,30 @@ func Rotate(path string, savePath string, name string, deg int) {
 		panic(err)
 	}
 
-	if deg == 0 {
-		transformedImage = imaging.Rotate(src, float64(deg), src.Bounds().RGBA64At(src.Bounds().Dx(), src.Bounds().Dy()))
+	if state == 0 {
+		transformedImage = imaging.Rotate(src, float64(0), src.Bounds().RGBA64At(src.Bounds().Size().X, src.Bounds().Size().Y))
 	}
 
-	if deg == 90 {
+	if state == 1 {
 		transformedImage = imaging.Rotate90(src)
 	}
 
-	if deg == 180 {
+	if state == 2 {
 		transformedImage = imaging.Rotate180(src)
 	}
 
-	if deg == 270 {
+	if state == 3 {
 		transformedImage = imaging.Rotate270(src)
 	}
 
 	imaging.Save(transformedImage, savePathName)
 
-	print := fmt.Sprintf("image %s saved after rotate %d", name, deg)
+	print := fmt.Sprintf("image %s saved after rotate", name)
 	fmt.Println(print)
 }
 
-func Flip(path string, savePath string, name string, deg int) {
+func Flip(path string, savePath string, name string, state int) {
 	filePath := fmt.Sprintf("%s%s", path, name)
-	fmt.Println(filePath)
 	savePathName := fmt.Sprintf("%s%s", savePath, name)
 	src, err := imaging.Open(filePath)
 	var transformedImage *image.NRGBA
@@ -49,22 +47,21 @@ func Flip(path string, savePath string, name string, deg int) {
 		panic(err)
 	}
 
-	if deg == 1 {
+	if state == 5 {
 		transformedImage = imaging.FlipH(src)
 	}
 
-	if deg == 0 {
+	if state == 6 {
 		transformedImage = imaging.FlipV(src)
 	}
 
 	imaging.Save(transformedImage, savePathName)
-	print := fmt.Sprintf("image %s saved after Flip %d", name, deg)
+	print := fmt.Sprintf("image %s saved after Flip", name)
 	fmt.Println(print)
 }
 
-func AdjustBringhtness(path string, savePath string, name string, id int) {
+func AdjustBringhtness(path string, savePath string, name string, state int) {
 	filePath := fmt.Sprintf("%s%s", path, name)
-	fmt.Println(filePath)
 	savePathName := fmt.Sprintf("%s%s", savePath, name)
 	src, err := imaging.Open(filePath)
 	var transformedImage *image.NRGBA
@@ -72,11 +69,11 @@ func AdjustBringhtness(path string, savePath string, name string, id int) {
 		panic(err)
 	}
 
-	if id == 0 {
+	if state == 7 {
 		transformedImage = imaging.AdjustBrightness(src, 30)
 	}
 
-	if id == 1 {
+	if state == 8 {
 		transformedImage = imaging.AdjustBrightness(src, -30)
 	}
 
@@ -87,7 +84,6 @@ func AdjustBringhtness(path string, savePath string, name string, id int) {
 
 func Blur(path string, savePath string, name string) {
 	filePath := fmt.Sprintf("%s%s", path, name)
-	fmt.Println(filePath)
 	savePathName := fmt.Sprintf("%s%s", savePath, name)
 	src, err := imaging.Open(filePath)
 	if err != nil {
@@ -97,6 +93,6 @@ func Blur(path string, savePath string, name string) {
 	transformedImage := imaging.Blur(src, 2.25)
 
 	imaging.Save(transformedImage, savePathName)
-	print := fmt.Sprintf("image %s saved after adjust blur %d", name, 1)
+	print := fmt.Sprintf("image %s saved after adjust blur", name)
 	fmt.Println(print)
 }
